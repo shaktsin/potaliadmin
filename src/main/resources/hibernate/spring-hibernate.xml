@@ -59,13 +59,13 @@
             <value>com.mysql.jdbc.Driver</value>
         </property>
         <property name="url">
-            <value>jdbc:mysql://localhost:3306/potalidb</value>
+            <value>jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_SCHEMA}</value>
         </property>
         <property name="username">
-            <value>root</value>
+            <value>${DB_USER}</value>
         </property>
         <property name="password">
-            <value>root</value>
+            <value>${DB_PASSWORD}</value>
         </property>
         <property name="removeAbandoned">
             <value>true</value>
