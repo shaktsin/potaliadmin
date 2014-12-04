@@ -1,4 +1,4 @@
-package com.potaliadmin.services.framework;
+package com.potaliadmin.impl.framework;
 
 import com.potaliadmin.pact.framework.BaseDao;
 import org.apache.commons.lang.StringUtils;

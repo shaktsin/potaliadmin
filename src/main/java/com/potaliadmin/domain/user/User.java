@@ -7,7 +7,10 @@ import java.io.Serializable;
  * Created by Shakti Singh on 10/2/14.
  */
 @Entity
-@Table(name = "user")
+@Table(name = "user",uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
+@NamedQueries(
+    @NamedQuery(name = "findByEmail",query = "from User u where u.email = :email")
+)
 public class User implements Serializable {
 
   @Id

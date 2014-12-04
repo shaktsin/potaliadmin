@@ -1,0 +1,16 @@
+body{
+  padding-top: 70px;
+}
+
+.box {
+  background-color: #f7f7f9;
+  letter-spacing: 1px;
+}
+
+.form-potali {
+  padding : 20px;
+}
+
+.header-non-collapse {
+  color: #777;
+}

@@ -42,6 +42,4 @@
         <property name="nestedTransactionAllowed" value="true"/>
     </bean>
 
-
-
 </beans>
