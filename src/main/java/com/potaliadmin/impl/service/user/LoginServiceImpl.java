@@ -2,7 +2,7 @@ package com.potaliadmin.impl.service.user;
 
 import com.potaliadmin.domain.user.User;
 import com.potaliadmin.dto.web.request.user.UserSignUpRequest;
-import com.potaliadmin.dto.web.response.user.UserSignUpResponse;
+import com.potaliadmin.dto.web.response.user.UserResponse;
 import com.potaliadmin.pact.service.users.LoginService;
 import com.potaliadmin.pact.service.users.UserService;
 import com.potaliadmin.security.Principal;
@@ -10,6 +10,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by Shakti Singh on 10/6/14.
@@ -21,22 +22,22 @@ public class LoginServiceImpl implements LoginService {
   UserService userService;
 
   @Override
-  public UserSignUpResponse signUp(UserSignUpRequest userSignUpRequest) {
-    UserSignUpResponse userSignUpResponse = new UserSignUpResponse();
+  @Transactional
+  public UserResponse signUp(UserSignUpRequest userSignUpRequest) {
+    UserResponse userResponse = null;
     try {
-      User user = getUserService().signUp(userSignUpRequest);
+      userResponse = getUserService().signUp(userSignUpRequest);
       UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(userSignUpRequest.getEmail(), userSignUpRequest.getPassword());
       usernamePasswordToken.setRememberMe(true);
       SecurityUtils.getSubject().login(usernamePasswordToken);
-
-      userSignUpResponse.setEmail(user.getEmail());
-      userSignUpResponse.setName(user.getName());
-      userSignUpResponse.setId(user.getId());
     } catch (Exception e) {
-      userSignUpResponse.setException(Boolean.TRUE);
-      userSignUpResponse.addMessage(e.getMessage());
+      if (null == userResponse) {
+        userResponse = new UserResponse();
+      }
+      userResponse.setException(Boolean.TRUE);
+      userResponse.addMessage(e.getMessage());
     }
-    return userSignUpResponse;
+    return userResponse;
   }
 
   @Override
@@ -45,12 +46,12 @@ public class LoginServiceImpl implements LoginService {
   }
 
   @Override
-  public UserSignUpResponse login(String email, String password) {
-    UserSignUpResponse userSignUpResponse = new UserSignUpResponse();
+  public UserResponse login(String email, String password) {
+    UserResponse userResponse = new UserResponse();
     if (null == email || null == password) {
-      userSignUpResponse.setException(Boolean.TRUE);
-      userSignUpResponse.addMessage("Please enter your credentials");
-      return userSignUpResponse;
+      userResponse.setException(Boolean.TRUE);
+      userResponse.addMessage("Please enter your credentials");
+      return userResponse;
     }
     try {
 
@@ -58,23 +59,23 @@ public class LoginServiceImpl implements LoginService {
       usernamePasswordToken.setRememberMe(true);
       SecurityUtils.getSubject().login(usernamePasswordToken);
 
-      userSignUpResponse = getLoggedInUser();
+      userResponse = getLoggedInUser();
 
     } catch (Exception e) {
-      userSignUpResponse.setException(Boolean.TRUE);
-      userSignUpResponse.addMessage(e.getMessage());
+      userResponse.setException(Boolean.TRUE);
+      userResponse.addMessage(e.getMessage());
     }
-    return userSignUpResponse;
+    return userResponse;
   }
 
   @Override
-  public UserSignUpResponse getLoggedInUser() {
-    UserSignUpResponse userSignUpResponse = new UserSignUpResponse();
+  public UserResponse getLoggedInUser() {
+    UserResponse userResponse = new UserResponse();
     Principal principal =(Principal) SecurityUtils.getSubject().getPrincipal();
-    userSignUpResponse.setEmail(principal.getEmail());
-    userSignUpResponse.setId(principal.getId());
-    userSignUpResponse.setName(principal.getName());
-    return userSignUpResponse;
+    userResponse.setEmail(principal.getEmail());
+    userResponse.setId(principal.getId());
+    userResponse.setName(principal.getName());
+    return userResponse;
   }
 
   public UserService getUserService() {

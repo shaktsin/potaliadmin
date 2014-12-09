@@ -1,7 +1,9 @@
 package com.potaliadmin.impl.service.user;
 
 import com.potaliadmin.domain.user.User;
+import com.potaliadmin.dto.internal.hibernate.user.UserSignUpQueryRequest;
 import com.potaliadmin.dto.web.request.user.UserSignUpRequest;
+import com.potaliadmin.dto.web.response.user.UserResponse;
 import com.potaliadmin.exceptions.InValidInputException;
 import com.potaliadmin.exceptions.PotaliRuntimeException;
 import com.potaliadmin.pact.dao.user.UserDao;
@@ -20,36 +22,44 @@ public class UserServiceImpl implements UserService {
   @Autowired
   UserDao userDao;
 
-  public User findByEmail(String email) {
-    return getUserDao().findByEmail(email);
+  public UserResponse findByEmail(String email) {
+    UserResponse userResponse = null;
+    User user = getUserDao().findByEmail(email);
+    if (null != user) {
+      userResponse = new UserResponse();
+      userResponse.setId(user.getId());
+      userResponse.setEmail(user.getEmail());
+      userResponse.setName(user.getAccountName());
+      userResponse.setPasswordChecksum(user.getPasswordChecksum());
+    }
+    return userResponse;
   }
 
   @Override
   @Transactional
-  public User signUp(UserSignUpRequest userSignUpRequest) {
+  public UserResponse signUp(UserSignUpRequest userSignUpRequest) {
     if (userSignUpRequest == null) {
       throw new InValidInputException("User request Parameters cannot be null");
     }
     if (userSignUpRequest.validate()) {
       throw new InValidInputException("Input Parameters are invalid!");
     }
-    User user = findByEmail(userSignUpRequest.getEmail());
-    if (null != user) {
+
+    UserResponse userResponse = findByEmail(userSignUpRequest.getEmail());
+    if (null != userResponse) {
       throw new PotaliRuntimeException("You have already registered with us!");
     }
 
-    user = new User();
-    user.setName(userSignUpRequest.getName());
-    user.setEmail(userSignUpRequest.getEmail());
-    user.setPasswordChecksum(BaseUtil.passwordEncrypt(userSignUpRequest.getPassword()));
-    user = save(user);
-    return user;
-  }
+    UserSignUpQueryRequest userSignUpQueryRequest = new UserSignUpQueryRequest(userSignUpRequest);
+    User user = getUserDao().createUser(userSignUpQueryRequest);
 
-  @Override
-  @Transactional
-  public User save(User user) {
-    return (User) userDao.save(user);
+    //create response
+    userResponse = new UserResponse();
+    userResponse.setId(user.getId());
+    userResponse.setEmail(user.getEmail());
+    userResponse.setName(user.getAccountName());
+
+    return userResponse;
   }
 
   public UserDao getUserDao() {

@@ -1,9 +1,8 @@
 package com.potaliadmin.controller;
 
 import com.potaliadmin.dto.web.request.user.UserSignUpRequest;
-import com.potaliadmin.dto.web.response.user.UserSignUpResponse;
+import com.potaliadmin.dto.web.response.user.UserResponse;
 import com.potaliadmin.pact.service.users.LoginService;
-import org.omg.CORBA.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +28,9 @@ public class LoginController {
   @RequestMapping(value = "/login",method = RequestMethod.POST)
   public String login(@RequestParam("email") String email, @RequestParam("password") String password, Model model) {
     logger.info("Login request received : email " + email + "  password " + password);
-    UserSignUpResponse userSignUpResponse = loginService.login(email,password);
-    model.addAttribute("response", userSignUpResponse);
-    if (userSignUpResponse.isException()) {
+    UserResponse userResponse = loginService.login(email,password);
+    model.addAttribute("response", userResponse);
+    if (userResponse.isException()) {
       return "hello";
     } else {
       return "dashboard";
@@ -40,16 +39,16 @@ public class LoginController {
 
   @RequestMapping(value = "/signUp",method = RequestMethod.POST)
   public String signUp(@ModelAttribute("userSignUpRequest")UserSignUpRequest userSignUpRequest, Model model) {
-    UserSignUpResponse userSignUpResponse = new UserSignUpResponse();
+    UserResponse userResponse = new UserResponse();
     if (userSignUpRequest == null) {
-      userSignUpResponse.setException(Boolean.TRUE);
-      userSignUpResponse.addMessage("Don't be silly! I need some input");
-      model.addAttribute("response", userSignUpResponse);
+      userResponse.setException(Boolean.TRUE);
+      userResponse.addMessage("Don't be silly! I need some input");
+      model.addAttribute("response", userResponse);
       return "hello";
     }
     logger.info("SignUp request received : email " + userSignUpRequest.getEmail() + "  password " + userSignUpRequest.getPassword());
-    userSignUpResponse = loginService.signUp(userSignUpRequest);
-    model.addAttribute("response", userSignUpResponse);
+    userResponse = loginService.signUp(userSignUpRequest);
+    model.addAttribute("response", userResponse);
     return "dashboard";
   }
 

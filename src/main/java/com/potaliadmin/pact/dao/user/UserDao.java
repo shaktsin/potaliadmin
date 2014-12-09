@@ -1,6 +1,7 @@
 package com.potaliadmin.pact.dao.user;
 
 import com.potaliadmin.domain.user.User;
+import com.potaliadmin.dto.internal.hibernate.user.UserSignUpQueryRequest;
 import com.potaliadmin.pact.framework.BaseDao;
 
 /**
@@ -9,4 +10,6 @@ import com.potaliadmin.pact.framework.BaseDao;
 public interface UserDao extends BaseDao {
 
   public User findByEmail(String email);
+
+  public User createUser(UserSignUpQueryRequest userSignUpQueryRequest);
 }

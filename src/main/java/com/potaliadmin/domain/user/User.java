@@ -2,6 +2,7 @@ package com.potaliadmin.domain.user;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by Shakti Singh on 10/2/14.
@@ -18,14 +19,38 @@ public class User implements Serializable {
   @Column(name = "id", unique = true, nullable = false)
   private Long id;
 
-  @Column(name = "name", unique = false, nullable = false,length = 45)
-  private String name;
+  @Column(name = "first_name", unique = false, nullable = false,length = 45)
+  private String firstName;
+
+  @Column(name = "last_name", unique = false, nullable = false,length = 45)
+  private String lastName;
+
+  @Column(name = "account_name", unique = false, nullable = false,length = 45)
+  private String accountName;
 
   @Column(name = "email", unique = true, nullable = false,length = 80)
   private String email;
 
-  @Column(name = "password_checksum", nullable = false)
+  @Column(name = "gender")
+  private Integer gender;
+
+  @Column(name = "verified", nullable = false)
+  private Boolean verified;
+
+  @Column(name = "hash", nullable = false)
   private String passwordChecksum;
+
+  @Column(name = "institute_id", nullable = false)
+  private Long instituteId;
+
+  @Temporal(TemporalType.DATE)
+  @Column(name = "create_date", nullable = false)
+  private Date createDate = new Date();
+
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "update_date", nullable = false)
+  private Date updateDate;
+
 
   public Long getId() {
     return id;
@@ -35,12 +60,28 @@ public class User implements Serializable {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public String getFirstName() {
+    return firstName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  public String getAccountName() {
+    return accountName;
+  }
+
+  public void setAccountName(String accountName) {
+    this.accountName = accountName;
   }
 
   public String getEmail() {
@@ -51,11 +92,51 @@ public class User implements Serializable {
     this.email = email;
   }
 
+  public Integer getGender() {
+    return gender;
+  }
+
+  public void setGender(Integer gender) {
+    this.gender = gender;
+  }
+
+  public Boolean getVerified() {
+    return verified;
+  }
+
+  public void setVerified(Boolean verified) {
+    this.verified = verified;
+  }
+
   public String getPasswordChecksum() {
     return passwordChecksum;
   }
 
   public void setPasswordChecksum(String passwordChecksum) {
     this.passwordChecksum = passwordChecksum;
+  }
+
+  public Long getInstituteId() {
+    return instituteId;
+  }
+
+  public void setInstituteId(Long instituteId) {
+    this.instituteId = instituteId;
+  }
+
+  public Date getCreateDate() {
+    return createDate;
+  }
+
+  public void setCreateDate(Date createDate) {
+    this.createDate = createDate;
+  }
+
+  public Date getUpdateDate() {
+    return updateDate;
+  }
+
+  public void setUpdateDate(Date updateDate) {
+    this.updateDate = updateDate;
   }
 }

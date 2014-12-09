@@ -21,6 +21,12 @@ public class Institute implements Serializable {
   @Column(name = "email_suffice", nullable = false, length = 45)
   private String emailSuffice;
 
+  @Column(name = "third_party_auth", nullable = false)
+  private Boolean thirdPartyAuth;
+
+  @Column(name="provider", nullable = false)
+  private Integer provider;
+
 
   public Long getId() {
     return id;
@@ -44,5 +50,21 @@ public class Institute implements Serializable {
 
   public void setEmailSuffice(String emailSuffice) {
     this.emailSuffice = emailSuffice;
+  }
+
+  public Boolean getThirdPartyAuth() {
+    return thirdPartyAuth;
+  }
+
+  public void setThirdPartyAuth(Boolean thirdPartyAuth) {
+    this.thirdPartyAuth = thirdPartyAuth;
+  }
+
+  public Integer getProvider() {
+    return provider;
+  }
+
+  public void setProvider(Integer provider) {
+    this.provider = provider;
   }
 }

@@ -1,6 +1,7 @@
 package com.potaliadmin.dto.web.request.user;
 
 
+import com.potaliadmin.constants.institute.EnumInstitute;
 import com.potaliadmin.util.BaseUtil;
 
 /**
@@ -8,17 +9,19 @@ import com.potaliadmin.util.BaseUtil;
  */
 public class UserSignUpRequest {
 
-  private String name;
+  private String firstName;
+  private String lastName;
+  private String accountName;
   private String email;
   private String password;
   private String rePassword;
-  private String phone;
-  private String company;
-  private String url;
+  private Long instituteId;
+  private Integer gender;
+  private Boolean verified;
 
   public boolean validate() {
     boolean isValid = Boolean.TRUE;
-    if (null == name) {
+    if (null == firstName) {
       isValid = Boolean.FALSE;
     }
     if (isValid && (null == email)) {
@@ -33,15 +36,30 @@ public class UserSignUpRequest {
     if (isValid && (password.equalsIgnoreCase(rePassword))) {
       isValid = Boolean.FALSE;
     }
+    if (isValid && (null == instituteId)) {
+      isValid = Boolean.FALSE;
+    }
+    if (isValid && !(EnumInstitute.contains(instituteId))) {
+      isValid = Boolean.FALSE;
+    }
+
     return isValid;
   }
 
-  public String getName() {
-    return name;
+  public String getFirstName() {
+    return firstName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
   }
 
   public String getEmail() {
@@ -68,27 +86,35 @@ public class UserSignUpRequest {
     this.rePassword = rePassword;
   }
 
-  public String getPhone() {
-    return phone;
+  public String getAccountName() {
+    return accountName;
   }
 
-  public void setPhone(String phone) {
-    this.phone = phone;
+  public void setAccountName(String accountName) {
+    this.accountName = accountName;
   }
 
-  public String getCompany() {
-    return company;
+  public Long getInstituteId() {
+    return instituteId;
   }
 
-  public void setCompany(String company) {
-    this.company = company;
+  public void setInstituteId(Long instituteId) {
+    this.instituteId = instituteId;
   }
 
-  public String getUrl() {
-    return url;
+  public Integer getGender() {
+    return gender;
   }
 
-  public void setUrl(String url) {
-    this.url = url;
+  public void setGender(Integer gender) {
+    this.gender = gender;
+  }
+
+  public Boolean getVerified() {
+    return verified;
+  }
+
+  public void setVerified(Boolean verified) {
+    this.verified = verified;
   }
 }
