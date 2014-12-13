@@ -4,12 +4,11 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Created by Shakti Singh on 11/15/14.
+ * Created by Shakti Singh on 12/9/14.
  */
 @Entity
-@Table(name = "state")
-public class State implements Serializable {
-
+@Table(name = "city")
+public class City implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", unique = true, nullable = false)
@@ -19,8 +18,7 @@ public class State implements Serializable {
   private String name;
 
   @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private Country country;
-
+  private State state;
 
   public Long getId() {
     return id;
@@ -38,11 +36,11 @@ public class State implements Serializable {
     this.name = name;
   }
 
-  public Country getCountry() {
-    return country;
+  public State getState() {
+    return state;
   }
 
-  public void setCountry(Country country) {
-    this.country = country;
+  public void setState(State state) {
+    this.state = state;
   }
 }

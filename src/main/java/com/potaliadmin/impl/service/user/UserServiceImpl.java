@@ -4,6 +4,7 @@ import com.potaliadmin.domain.user.User;
 import com.potaliadmin.dto.internal.hibernate.user.UserSignUpQueryRequest;
 import com.potaliadmin.dto.web.request.user.UserSignUpRequest;
 import com.potaliadmin.dto.web.response.user.UserResponse;
+import com.potaliadmin.exceptions.AlreadySignUpException;
 import com.potaliadmin.exceptions.InValidInputException;
 import com.potaliadmin.exceptions.PotaliRuntimeException;
 import com.potaliadmin.pact.dao.user.UserDao;
@@ -47,10 +48,11 @@ public class UserServiceImpl implements UserService {
 
     UserResponse userResponse = findByEmail(userSignUpRequest.getEmail());
     if (null != userResponse) {
-      throw new PotaliRuntimeException("You have already registered with us!");
+      throw new AlreadySignUpException("You have already registered with us!");
     }
 
     UserSignUpQueryRequest userSignUpQueryRequest = new UserSignUpQueryRequest(userSignUpRequest);
+    userSignUpQueryRequest.setHash(BaseUtil.passwordEncrypt(userSignUpRequest.getPassword()));
     User user = getUserDao().createUser(userSignUpQueryRequest);
 
     //create response

@@ -2,6 +2,8 @@ package com.potaliadmin.dto.web.request.user;
 
 
 import com.potaliadmin.constants.institute.EnumInstitute;
+import com.potaliadmin.constants.user.EnumGender;
+import com.potaliadmin.dto.web.response.sso.GoogleIdentityResponse;
 import com.potaliadmin.util.BaseUtil;
 
 /**
@@ -18,6 +20,20 @@ public class UserSignUpRequest {
   private Long instituteId;
   private Integer gender;
   private Boolean verified;
+
+  public UserSignUpRequest() {
+  }
+
+  public UserSignUpRequest(GoogleIdentityResponse googleIdentityResponse) {
+    this.firstName = googleIdentityResponse.getName();
+    this.lastName = googleIdentityResponse.getFamily_name();
+    this.accountName = googleIdentityResponse.getGiven_name();
+    this.email = googleIdentityResponse.getEmail();
+    this.gender = EnumGender.getGenderIdFromName(googleIdentityResponse.getGender());
+    this.verified = googleIdentityResponse.getVerified_email();
+  }
+
+
 
   public boolean validate() {
     boolean isValid = Boolean.TRUE;

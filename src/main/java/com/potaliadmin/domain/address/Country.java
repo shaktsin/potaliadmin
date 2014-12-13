@@ -18,14 +18,11 @@ public class Country implements Serializable {
   @Column(name = "name", nullable = false)
   private String name;
 
-  @Column(name = "short_iso_code", nullable = false,length = 2)
-  private String shortIsoCode;
+  @Column(name = "country_code", nullable = false,length = 2)
+  private String countryCode;
 
-  @Column(name = "long_iso_code", nullable = true,length = 3)
-  private String longIsoCode;
-
-  @Column(name = "country_code", nullable = false)
-  private Integer countryCode;
+  @Column(name = "iso_code", nullable = true,length = 3)
+  private String isoCode;
 
   public Long getId() {
     return id;
@@ -43,27 +40,19 @@ public class Country implements Serializable {
     this.name = name;
   }
 
-  public String getShortIsoCode() {
-    return shortIsoCode;
-  }
-
-  public void setShortIsoCode(String shortIsoCode) {
-    this.shortIsoCode = shortIsoCode;
-  }
-
-  public String getLongIsoCode() {
-    return longIsoCode;
-  }
-
-  public void setLongIsoCode(String longIsoCode) {
-    this.longIsoCode = longIsoCode;
-  }
-
-  public Integer getCountryCode() {
+  public String getCountryCode() {
     return countryCode;
   }
 
-  public void setCountryCode(Integer countryCode) {
+  public void setCountryCode(String countryCode) {
     this.countryCode = countryCode;
+  }
+
+  public String getIsoCode() {
+    return isoCode;
+  }
+
+  public void setIsoCode(String isoCode) {
+    this.isoCode = isoCode;
   }
 }

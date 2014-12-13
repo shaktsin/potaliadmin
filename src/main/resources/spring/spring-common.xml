@@ -35,11 +35,16 @@
         </property>
     </bean>
     <bean id="transactionManager"
-          class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-        <property name="sessionFactory">
-            <ref bean="sessionFactory"/>
-        </property>
+          class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
         <property name="nestedTransactionAllowed" value="true"/>
     </bean>
+
+    <!-- Google Login Helper -->
+
+    <bean id="googleHelperClass" class="com.potaliadmin.util.helper.login.GoogleLoginHelper"
+          init-method="init" destroy-method="destroy"/>
+
+    <context:property-placeholder location="classpath:app.properties"/>
 
 </beans>

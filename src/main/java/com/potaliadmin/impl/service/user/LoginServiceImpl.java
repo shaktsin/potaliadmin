@@ -3,6 +3,7 @@ package com.potaliadmin.impl.service.user;
 import com.potaliadmin.domain.user.User;
 import com.potaliadmin.dto.web.request.user.UserSignUpRequest;
 import com.potaliadmin.dto.web.response.user.UserResponse;
+import com.potaliadmin.exceptions.AlreadySignUpException;
 import com.potaliadmin.pact.service.users.LoginService;
 import com.potaliadmin.pact.service.users.UserService;
 import com.potaliadmin.security.Principal;
@@ -24,20 +25,15 @@ public class LoginServiceImpl implements LoginService {
   @Override
   @Transactional
   public UserResponse signUp(UserSignUpRequest userSignUpRequest) {
-    UserResponse userResponse = null;
     try {
-      userResponse = getUserService().signUp(userSignUpRequest);
+      UserResponse userResponse = getUserService().signUp(userSignUpRequest);
       UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(userSignUpRequest.getEmail(), userSignUpRequest.getPassword());
       usernamePasswordToken.setRememberMe(true);
       SecurityUtils.getSubject().login(usernamePasswordToken);
+      return userResponse;
     } catch (Exception e) {
-      if (null == userResponse) {
-        userResponse = new UserResponse();
-      }
-      userResponse.setException(Boolean.TRUE);
-      userResponse.addMessage(e.getMessage());
+      throw new AlreadySignUpException(e.getMessage());
     }
-    return userResponse;
   }
 
   @Override

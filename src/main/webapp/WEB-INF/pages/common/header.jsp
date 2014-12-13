@@ -33,21 +33,31 @@
       </button>
       <a class="navbar-brand" href="#">${param.title}</a>
     </div>
-    <c:if test="<%=SecurityUtils.getSubject().isAuthenticated()%>">
-      <c:url var="logOutAction" value="/logout"/>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                ${param.name} <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="${logOutAction}">Log Out</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </c:if>
+    <c:choose>
+      <c:when test="<%=SecurityUtils.getSubject().isAuthenticated()%>">
+        <c:url var="logOutAction" value="/logout"/>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  ${param.name} <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="${logOutAction}">Log Out</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </c:when>
+      <c:otherwise>
+        <c:url var="sso" value="/sso"/>
+        <form class="navbar-form navbar-right" action="${sso}" role="search">
+          <button type="submit" class="btn btn-default">
+            SignIn with Google
+          </button>
+        </form>
+      </c:otherwise>
+    </c:choose>
   </div>
 </nav>
 </body>

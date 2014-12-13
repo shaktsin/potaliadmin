@@ -3,6 +3,7 @@ package com.potaliadmin.domain.user;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by Shakti Singh on 10/2/14.
@@ -44,12 +45,18 @@ public class User implements Serializable {
   private Long instituteId;
 
   @Temporal(TemporalType.DATE)
-  @Column(name = "create_date", nullable = false)
+  @Column(name = "created_date", nullable = false)
   private Date createDate = new Date();
 
   @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "update_date", nullable = false)
+  @Column(name = "updated_date", nullable = true)
   private Date updateDate;
+
+
+  @ManyToMany(cascade = {CascadeType.ALL})
+  @JoinTable(name="user_has_role", joinColumns = {@JoinColumn(name = "user_id")},
+      inverseJoinColumns = {@JoinColumn(name = "role_id")})
+  private Set<Role> roleSet;
 
 
   public Long getId() {
@@ -138,5 +145,13 @@ public class User implements Serializable {
 
   public void setUpdateDate(Date updateDate) {
     this.updateDate = updateDate;
+  }
+
+  public Set<Role> getRoleSet() {
+    return roleSet;
+  }
+
+  public void setRoleSet(Set<Role> roleSet) {
+    this.roleSet = roleSet;
   }
 }

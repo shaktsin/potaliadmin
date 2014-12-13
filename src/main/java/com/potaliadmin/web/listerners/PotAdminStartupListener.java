@@ -19,6 +19,9 @@ import javax.servlet.ServletContextListener;
 public class PotAdminStartupListener implements ServletContextListener {
 
   private Logger logger = LoggerFactory.getLogger(PotAdminStartupListener.class);
+  public static String APP_CONTEXT_PATH;
+  public static String APP_ROOT_PATH;
+  public static String BASE_PATH = "/";
 
   @Autowired
   BaseDao baseDao;
@@ -29,6 +32,9 @@ public class PotAdminStartupListener implements ServletContextListener {
   @Override
   public void contextInitialized(ServletContextEvent servletContextEvent) {
     logger.info("=================== STARTING POTALI ADMIN ===================");
+    APP_CONTEXT_PATH = servletContextEvent.getServletContext().getContextPath();
+    APP_ROOT_PATH = servletContextEvent.getServletContext().getServerInfo();
+    logger.info("Set up the root context path as : "+APP_ROOT_PATH);
     /*NativeCacheManager nativeCacheManager = NativeCacheManager.getInstance();
     if (getBaseDao() == null) {
       logger.error("BaseDao is null");

@@ -1,15 +1,14 @@
-package com.potaliadmin.domain.address;
+package com.potaliadmin.domain.industry;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Created by Shakti Singh on 11/15/14.
+ * Created by Shakti Singh on 12/9/14.
  */
 @Entity
-@Table(name = "state")
-public class State implements Serializable {
-
+@Table(name = "industry_roles")
+public class IndustryRoles implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", unique = true, nullable = false)
@@ -18,9 +17,9 @@ public class State implements Serializable {
   @Column(name = "name", nullable = false, length = 45)
   private String name;
 
-  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private Country country;
-
+  @ManyToOne
+  @JoinColumn(name = "industry_id")
+  private Industry industry;
 
   public Long getId() {
     return id;
@@ -38,11 +37,11 @@ public class State implements Serializable {
     this.name = name;
   }
 
-  public Country getCountry() {
-    return country;
+  public Industry getIndustry() {
+    return industry;
   }
 
-  public void setCountry(Country country) {
-    this.country = country;
+  public void setIndustry(Industry industry) {
+    this.industry = industry;
   }
 }

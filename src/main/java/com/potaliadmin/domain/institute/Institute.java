@@ -27,6 +27,9 @@ public class Institute implements Serializable {
   @Column(name="provider", nullable = false)
   private Integer provider;
 
+  @Column(name="type", nullable = false)
+  private Integer type;
+
 
   public Long getId() {
     return id;
@@ -66,5 +69,13 @@ public class Institute implements Serializable {
 
   public void setProvider(Integer provider) {
     this.provider = provider;
+  }
+
+  public Integer getType() {
+    return type;
+  }
+
+  public void setType(Integer type) {
+    this.type = type;
   }
 }

@@ -5,8 +5,8 @@ package com.potaliadmin.constants.institute;
  */
 public enum  EnumInstitute {
 
-  OFC(0L, "OfCampus", "gmail.com"),
-  ISB(1L, "ISB", "pgp.isb.edu");
+  OFC(1L, "OfCampus", "gmail.com"),
+  ISB(2L, "ISB", "pgp.isb.edu");
 
   private Long id;
   private String name;

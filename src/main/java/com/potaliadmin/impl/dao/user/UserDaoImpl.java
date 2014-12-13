@@ -29,16 +29,22 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     if (user != null) {
       throw new PotaliRuntimeException("You are already registered with us");
     }
-    user = new User();
-    user.setFirstName(userSignUpQueryRequest.getFirstName());
-    user.setLastName(userSignUpQueryRequest.getLastName());
-    user.setAccountName(userSignUpQueryRequest.getAccountName());
-    user.setEmail(userSignUpQueryRequest.getEmail());
-    user.setGender(userSignUpQueryRequest.getGender());
-    user.setVerified(userSignUpQueryRequest.getVerified());
-    user.setPasswordChecksum(userSignUpQueryRequest.getHash());
-    user.setInstituteId(userSignUpQueryRequest.getInstituteId());
-    save(user);
+
+    try {
+      user = new User();
+      user.setFirstName(userSignUpQueryRequest.getFirstName());
+      user.setLastName(userSignUpQueryRequest.getLastName());
+      user.setAccountName(userSignUpQueryRequest.getAccountName());
+      user.setEmail(userSignUpQueryRequest.getEmail());
+      user.setGender(userSignUpQueryRequest.getGender());
+      user.setVerified(userSignUpQueryRequest.getVerified());
+      user.setPasswordChecksum(userSignUpQueryRequest.getHash());
+      user.setInstituteId(userSignUpQueryRequest.getInstituteId());
+      save(user);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
 
     return user;
   }

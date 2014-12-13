@@ -30,6 +30,17 @@ public enum  EnumGender {
     return contains;
   }
 
+  public static Integer getGenderIdFromName(String name) {
+    Integer id = 0;
+    for (EnumGender enumGender : EnumGender.values()) {
+      if (enumGender.name.equalsIgnoreCase(name)) {
+        id = enumGender.getId();
+        break;
+      }
+    }
+    return id;
+  }
+
   public Integer getId() {
     return id;
   }
