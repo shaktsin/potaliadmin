@@ -7,6 +7,7 @@ import com.potaliadmin.dto.web.response.user.UserResponse;
 import com.potaliadmin.exceptions.AlreadySignUpException;
 import com.potaliadmin.pact.service.users.LoginService;
 import com.potaliadmin.util.helper.login.GoogleLoginHelper;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +38,14 @@ public class LoginController {
 
 
   @RequestMapping(value = "/login",method = RequestMethod.POST)
-  public String login(@RequestParam("email") String email, @RequestParam("password") String password, Model model) {
-    logger.info("Login request received : email " + email + "  password " + password);
-    UserResponse userResponse = loginService.login(email,password);
-    model.addAttribute("response", userResponse);
+  public String login(@RequestParam("login") String login, @RequestParam("password") String password, Model model) {
+    logger.info("Login request received : email " + login + "  password " + password);
+    UserResponse userResponse = loginService.login(login,password);
+    //model.addAttribute("response", userResponse);
     if (userResponse.isException()) {
-      return "hello";
+      return "redirect:/";
     } else {
-      return "dashboard";
+      return "redirect:dashboard";
     }
   }
 
@@ -59,87 +60,95 @@ public class LoginController {
     }
     logger.info("SignUp request received : email " + userSignUpRequest.getEmail() + "  password " + userSignUpRequest.getPassword());
     userResponse = loginService.signUp(userSignUpRequest);
+    //model.addAttribute("response", userResponse);
+    return "redirect:dashboard";
+  }
+
+  @RequestMapping(value = "/dashboard",method = RequestMethod.GET)
+  @RequiresAuthentication
+  public String dashboard(Model model) {
+    UserResponse userResponse = loginService.getLoggedInUser();
     model.addAttribute("response", userResponse);
     return "dashboard";
   }
 
-  @RequestMapping(name = "callback",value = "/oauth", method = RequestMethod.GET)
-  public String callback(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Model model) {
-    String authCode = httpServletRequest.getParameter("code");
-    String state = httpServletRequest.getParameter("state");
-    UserResponse userResponse = new UserResponse();
-    if (authCode == null || state == null) {
-      userResponse.setException(Boolean.TRUE);
-      userResponse.addMessage("Something went wrong in google sign on process");
-      model.addAttribute("response", userResponse);
-      return "hello";
-    }
-
-    String sessionToken = (String)httpServletRequest.getSession().getAttribute("state");
-
-    if (sessionToken == null || !sessionToken.equalsIgnoreCase(state)) {
-      userResponse.setException(Boolean.TRUE);
-      userResponse.addMessage("Your session is expired, please try again");
-      model.addAttribute("response", userResponse);
-      return "hello";
-    }
-
-    httpServletRequest.removeAttribute("state");
-
-
-    try {
-
-      GoogleIdentityResponse googleIdentityResponse = googleLoginHelper.getUserInfoJson(authCode);
-      if (googleIdentityResponse == null) {
-        userResponse.setException(Boolean.TRUE);
-        userResponse.addMessage("Failed to make google sign on credential exchange");
-        model.addAttribute("response", userResponse);
-        return "hello";
-      }
-
-      String email = googleIdentityResponse.getEmail();
-      String password = "DEFAULT_PASSWORD"+email;
-
-      try {
-        UserSignUpRequest userSignUpRequest = new UserSignUpRequest(googleIdentityResponse);
-        userSignUpRequest.setInstituteId(EnumInstitute.OFC.getId());
-        userSignUpRequest.setPassword(password);
-        userSignUpRequest.setRePassword(password);
-
-        userResponse = getLoginService().signUp(userSignUpRequest);
-        model.addAttribute("response", userResponse);
-        return "dashboard";
-
-      } catch (AlreadySignUpException e) {
-        try {
-          userResponse = getLoginService().login(email,password);
-          model.addAttribute("response", userResponse);
-          return "dashboard";
-        } catch (Exception ex) {
-          logger.error("Error ",ex);
-          userResponse.setException(Boolean.TRUE);
-          userResponse.addMessage("Could not login with email "+email);
-          model.addAttribute("response", userResponse);
-          return "hello";
-
-        }
-      } catch (Exception e) {
-        logger.info("Error ",e);
-        userResponse.setException(Boolean.TRUE);
-        userResponse.addMessage("Could not sign up with "+email);
-        model.addAttribute("response", userResponse);
-        return "hello";
-      }
-
-
-    } catch (Exception e) {
-      logger.info("Error ",e);
-      userResponse.setException(Boolean.TRUE);
-      userResponse.addMessage("Failed to make google sign on credential exchange");
-      model.addAttribute("response", userResponse);
-      return "hello";
-    }
-  }
+//  @RequestMapping(name = "callback",value = "/oauth", method = RequestMethod.GET)
+//  public String callback(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Model model) {
+//    String authCode = httpServletRequest.getParameter("code");
+//    String state = httpServletRequest.getParameter("state");
+//    UserResponse userResponse = new UserResponse();
+//    if (authCode == null || state == null) {
+//      userResponse.setException(Boolean.TRUE);
+//      userResponse.addMessage("Something went wrong in google sign on process");
+//      model.addAttribute("response", userResponse);
+//      return "hello";
+//    }
+//
+//    String sessionToken = (String)httpServletRequest.getSession().getAttribute("state");
+//
+//    if (sessionToken == null || !sessionToken.equalsIgnoreCase(state)) {
+//      userResponse.setException(Boolean.TRUE);
+//      userResponse.addMessage("Your session is expired, please try again");
+//      model.addAttribute("response", userResponse);
+//      return "hello";
+//    }
+//
+//    httpServletRequest.removeAttribute("state");
+//
+//
+//    try {
+//
+//      GoogleIdentityResponse googleIdentityResponse = googleLoginHelper.getUserInfoJson(authCode);
+//      if (googleIdentityResponse == null) {
+//        userResponse.setException(Boolean.TRUE);
+//        userResponse.addMessage("Failed to make google sign on credential exchange");
+//        model.addAttribute("response", userResponse);
+//        return "hello";
+//      }
+//
+//      String email = googleIdentityResponse.getEmail();
+//      String password = "DEFAULT_PASSWORD"+email;
+//
+//      try {
+//        UserSignUpRequest userSignUpRequest = new UserSignUpRequest(googleIdentityResponse);
+//        userSignUpRequest.setInstituteId(EnumInstitute.OFC.getId());
+//        userSignUpRequest.setPassword(password);
+//        userSignUpRequest.setRePassword(password);
+//
+//        userResponse = getLoginService().signUp(userSignUpRequest);
+//        model.addAttribute("response", userResponse);
+//        return "dashboard";
+//
+//      } catch (AlreadySignUpException e) {
+//        try {
+//          userResponse = getLoginService().login(email,password);
+//          model.addAttribute("response", userResponse);
+//          return "dashboard";
+//        } catch (Exception ex) {
+//          logger.error("Error ",ex);
+//          userResponse.setException(Boolean.TRUE);
+//          userResponse.addMessage("Could not login with email "+email);
+//          model.addAttribute("response", userResponse);
+//          return "hello";
+//
+//        }
+//      } catch (Exception e) {
+//        logger.info("Error ",e);
+//        userResponse.setException(Boolean.TRUE);
+//        userResponse.addMessage("Could not sign up with "+email);
+//        model.addAttribute("response", userResponse);
+//        return "hello";
+//      }
+//
+//
+//    } catch (Exception e) {
+//      logger.info("Error ",e);
+//      userResponse.setException(Boolean.TRUE);
+//      userResponse.addMessage("Failed to make google sign on credential exchange");
+//      model.addAttribute("response", userResponse);
+//      return "hello";
+//    }
+//  }
 
   @RequestMapping(value = "/sso", method = RequestMethod.GET)
   public ModelAndView sso(HttpServletRequest httpServletRequest) {
@@ -153,7 +162,7 @@ public class LoginController {
   @RequestMapping(value = "/logout",method = RequestMethod.GET)
   public String signUp() {
     loginService.logOut();
-    return "hello";
+    return "redirect:/";
   }
 
 

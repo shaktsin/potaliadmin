@@ -11,6 +11,7 @@
   <link href="<c:url value="/resources/css/potali/potali.css"/>" rel="stylesheet">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media
      queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page
@@ -31,7 +32,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">${param.title}</a>
+      <a class="navbar-brand" href="#">storetry</a>
     </div>
     <c:choose>
       <c:when test="<%=SecurityUtils.getSubject().isAuthenticated()%>">
@@ -50,12 +51,11 @@
         </div>
       </c:when>
       <c:otherwise>
-        <c:url var="sso" value="/sso"/>
-        <form class="navbar-form navbar-right" action="${sso}" role="search">
-          <button type="submit" class="btn btn-default">
-            SignIn with Google
-          </button>
-        </form>
+        <%--<form class="navbar-form navbar-right" action="${sso}" role="search">--%>
+          <%--<a class="btn btn-default">--%>
+            <%--SignIn with Google--%>
+          <%--</a>--%>
+        <%--</form>--%>
       </c:otherwise>
     </c:choose>
   </div>

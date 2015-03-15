@@ -11,36 +11,36 @@ public class UserSignUpQueryRequest extends AbstractUserRequest {
 
   public UserSignUpQueryRequest() {  }
 
+//  public UserSignUpQueryRequest(UserSignUpRequest userSignUpRequest) {
+//    this.firstName = userSignUpRequest.getFirstName();
+//    this.lastName = userSignUpRequest.getLastName();
+//    this.accountName = userSignUpRequest.getAccountName();
+//    if (null == accountName) {
+//      accountName = firstName;
+//    }
+//    this.gender =userSignUpRequest.getGender();
+//    this.email = userSignUpRequest.getEmail();
+//    this.verified = userSignUpRequest.getVerified();
+//    this.instituteId = userSignUpRequest.getInstituteId();
+//  }
+
   public UserSignUpQueryRequest(UserSignUpRequest userSignUpRequest) {
-    this.firstName = userSignUpRequest.getFirstName();
-    this.lastName = userSignUpRequest.getLastName();
-    this.accountName = userSignUpRequest.getAccountName();
-    if (null == accountName) {
-      accountName = firstName;
-    }
-    this.gender =userSignUpRequest.getGender();
+    this.name = userSignUpRequest.getName();
     this.email = userSignUpRequest.getEmail();
-    this.verified = userSignUpRequest.getVerified();
-    this.instituteId = userSignUpRequest.getInstituteId();
+    this.login = userSignUpRequest.getLogin();
+    this.password = userSignUpRequest.getPassword();
   }
 
   public boolean verify() {
     Boolean isVerified = Boolean.TRUE;
-    if ((null==firstName || StringUtils.isEmpty(firstName))){
-      isVerified = Boolean.FALSE;
-    }
-    if (isVerified && (null == gender || !EnumGender.contains(gender))) {
-      isVerified = Boolean.FALSE;
-    }
-    if (isVerified && (null == email)) {
+
+    if (null == email) {
       isVerified = Boolean.FALSE;
     }
     if (isVerified && (null == hash)) {
       isVerified = Boolean.FALSE;
     }
-    if (isVerified && (null == instituteId)) {
-      isVerified = Boolean.FALSE;
-    }
+
     return isVerified;
   }
 

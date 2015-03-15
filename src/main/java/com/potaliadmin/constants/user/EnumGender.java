@@ -1,7 +1,5 @@
 package com.potaliadmin.constants.user;
 
-import com.potaliadmin.domain.institute.Institute;
-
 /**
  * Created by Shakti Singh on 12/6/14.
  */

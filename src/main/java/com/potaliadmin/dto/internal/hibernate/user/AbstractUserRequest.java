@@ -5,39 +5,37 @@ package com.potaliadmin.dto.internal.hibernate.user;
  */
 public abstract class AbstractUserRequest {
 
-  protected String firstName;
-  protected String lastName;
-  protected String accountName;
+  protected String name;
   protected String email;
-  protected Integer gender;
-  protected Boolean verified;
   protected String hash;
-  protected Long instituteId;
+  protected String password;
+  protected String login;
 
   public abstract boolean verify();
 
-  public String getFirstName() {
-    return firstName;
+
+  public String getHash() {
+    return hash;
   }
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
+  public void setHash(String hash) {
+    this.hash = hash;
   }
 
-  public String getLastName() {
-    return lastName;
+  public String getLogin() {
+    return login;
   }
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
+  public void setLogin(String login) {
+    this.login = login;
   }
 
-  public String getAccountName() {
-    return accountName;
+  public String getName() {
+    return name;
   }
 
-  public void setAccountName(String accountName) {
-    this.accountName = accountName;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getEmail() {
@@ -48,35 +46,11 @@ public abstract class AbstractUserRequest {
     this.email = email;
   }
 
-  public Integer getGender() {
-    return gender;
+  public String getPassword() {
+    return password;
   }
 
-  public void setGender(Integer gender) {
-    this.gender = gender;
-  }
-
-  public Boolean getVerified() {
-    return verified;
-  }
-
-  public void setVerified(Boolean verified) {
-    this.verified = verified;
-  }
-
-  public String getHash() {
-    return hash;
-  }
-
-  public void setHash(String hash) {
-    this.hash = hash;
-  }
-
-  public Long getInstituteId() {
-    return instituteId;
-  }
-
-  public void setInstituteId(Long instituteId) {
-    this.instituteId = instituteId;
+  public void setPassword(String password) {
+    this.password = password;
   }
 }

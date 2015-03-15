@@ -10,7 +10,7 @@
   <div class="row">
     <div class="col-xs-12">
       <footer>
-        <p>&copy; Copyright ofCampus.com</p>
+        <p>&copy; Copyright storetry.com</p>
       </footer>
     </div>
   </div>

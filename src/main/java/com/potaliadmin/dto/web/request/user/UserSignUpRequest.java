@@ -11,71 +11,46 @@ import com.potaliadmin.util.BaseUtil;
  */
 public class UserSignUpRequest {
 
-  private String firstName;
-  private String lastName;
-  private String accountName;
+  private String name;
+  private String login;
   private String email;
   private String password;
-  private String rePassword;
-  private Long instituteId;
-  private Integer gender;
-  private Boolean verified;
 
   public UserSignUpRequest() {
   }
 
-  public UserSignUpRequest(GoogleIdentityResponse googleIdentityResponse) {
-    this.firstName = googleIdentityResponse.getName();
-    this.lastName = googleIdentityResponse.getFamily_name();
-    this.accountName = googleIdentityResponse.getGiven_name();
-    this.email = googleIdentityResponse.getEmail();
-    this.gender = EnumGender.getGenderIdFromName(googleIdentityResponse.getGender());
-    this.verified = googleIdentityResponse.getVerified_email();
-  }
+//  public UserSignUpRequest(GoogleIdentityResponse googleIdentityResponse) {
+//    this.firstName = googleIdentityResponse.getName();
+//    this.lastName = googleIdentityResponse.getFamily_name();
+//    this.accountName = googleIdentityResponse.getGiven_name();
+//    this.email = googleIdentityResponse.getEmail();
+//    this.gender = EnumGender.getGenderIdFromName(googleIdentityResponse.getGender());
+//    this.verified = googleIdentityResponse.getVerified_email();
+//  }
 
 
 
   public boolean validate() {
     boolean isValid = Boolean.TRUE;
-    if (null == firstName) {
-      isValid = Boolean.FALSE;
-    }
-    if (isValid && (null == email)) {
-      isValid = Boolean.FALSE;
-    }
-    if (isValid && BaseUtil.isValidEmail(email)) {
-      isValid = Boolean.FALSE;
-    }
-    if (isValid && (null == password || null == rePassword)) {
-      isValid = Boolean.FALSE;
-    }
-    if (isValid && (password.equalsIgnoreCase(rePassword))) {
-      isValid = Boolean.FALSE;
-    }
-    if (isValid && (null == instituteId)) {
-      isValid = Boolean.FALSE;
-    }
-    if (isValid && !(EnumInstitute.contains(instituteId))) {
-      isValid = Boolean.FALSE;
-    }
+
 
     return isValid;
   }
 
-  public String getFirstName() {
-    return firstName;
+  public String getName() {
+    return name;
   }
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public String getLastName() {
-    return lastName;
+  public String getLogin() {
+    return login;
   }
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
+  public void setLogin(String login) {
+    this.login = login;
   }
 
   public String getEmail() {
@@ -94,43 +69,4 @@ public class UserSignUpRequest {
     this.password = password;
   }
 
-  public String getRePassword() {
-    return rePassword;
-  }
-
-  public void setRePassword(String rePassword) {
-    this.rePassword = rePassword;
-  }
-
-  public String getAccountName() {
-    return accountName;
-  }
-
-  public void setAccountName(String accountName) {
-    this.accountName = accountName;
-  }
-
-  public Long getInstituteId() {
-    return instituteId;
-  }
-
-  public void setInstituteId(Long instituteId) {
-    this.instituteId = instituteId;
-  }
-
-  public Integer getGender() {
-    return gender;
-  }
-
-  public void setGender(Integer gender) {
-    this.gender = gender;
-  }
-
-  public Boolean getVerified() {
-    return verified;
-  }
-
-  public void setVerified(Boolean verified) {
-    this.verified = verified;
-  }
 }

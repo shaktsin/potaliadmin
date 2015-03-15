@@ -7,7 +7,7 @@
 </head>
 <body>
 <jsp:include page="common/header.jsp">
-  <jsp:param name="title" value="Hippo"/>
+  <jsp:param name="title" value="storetry"/>
   <jsp:param name="name" value="${response.name}"/>
 </jsp:include>
 

@@ -11,5 +11,7 @@ public interface UserDao extends BaseDao {
 
   public User findByEmail(String email);
 
+  public User findByLogin(String login);
+
   public User createUser(UserSignUpQueryRequest userSignUpQueryRequest);
 }

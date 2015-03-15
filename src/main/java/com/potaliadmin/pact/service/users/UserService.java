@@ -10,5 +10,7 @@ public interface UserService {
 
   UserResponse findByEmail(String email);
 
+  UserResponse findByLogin(String login);
+
   UserResponse signUp(UserSignUpRequest userSignUpRequest);
 }

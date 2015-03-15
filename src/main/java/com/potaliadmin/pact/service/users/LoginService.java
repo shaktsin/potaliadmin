@@ -10,7 +10,7 @@ public interface LoginService {
 
   public UserResponse signUp(UserSignUpRequest userSignUpRequest);
 
-  public UserResponse login(String email,String password);
+  public UserResponse login(String login,String password);
 
   public UserResponse getLoggedInUser();
 

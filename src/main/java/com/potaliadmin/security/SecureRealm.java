@@ -55,7 +55,7 @@ public class SecureRealm extends AuthorizingRealm {
     if (username == null) {
       throw new AccountException("Null username are not allowed by this realm.");
     }
-    UserResponse userResponse = getUserService().findByEmail(username);
+    UserResponse userResponse = getUserService().findByLogin(username);
     if (null == userResponse) {
       throw new AccountException("No user found with name "+username);
     }

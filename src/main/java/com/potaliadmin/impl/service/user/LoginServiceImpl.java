@@ -4,6 +4,7 @@ import com.potaliadmin.domain.user.User;
 import com.potaliadmin.dto.web.request.user.UserSignUpRequest;
 import com.potaliadmin.dto.web.response.user.UserResponse;
 import com.potaliadmin.exceptions.AlreadySignUpException;
+import com.potaliadmin.exceptions.PotaliRuntimeException;
 import com.potaliadmin.pact.service.users.LoginService;
 import com.potaliadmin.pact.service.users.UserService;
 import com.potaliadmin.security.Principal;
@@ -27,12 +28,12 @@ public class LoginServiceImpl implements LoginService {
   public UserResponse signUp(UserSignUpRequest userSignUpRequest) {
     try {
       UserResponse userResponse = getUserService().signUp(userSignUpRequest);
-      UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(userSignUpRequest.getEmail(), userSignUpRequest.getPassword());
+      UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(userSignUpRequest.getLogin(), userSignUpRequest.getPassword());
       usernamePasswordToken.setRememberMe(true);
       SecurityUtils.getSubject().login(usernamePasswordToken);
       return userResponse;
     } catch (Exception e) {
-      throw new AlreadySignUpException(e.getMessage());
+      throw new PotaliRuntimeException(e.getMessage());
     }
   }
 
@@ -42,16 +43,16 @@ public class LoginServiceImpl implements LoginService {
   }
 
   @Override
-  public UserResponse login(String email, String password) {
+  public UserResponse login(String login, String password) {
     UserResponse userResponse = new UserResponse();
-    if (null == email || null == password) {
+    if (null == login || null == password) {
       userResponse.setException(Boolean.TRUE);
       userResponse.addMessage("Please enter your credentials");
       return userResponse;
     }
     try {
 
-      UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(email, password);
+      UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(login, password);
       usernamePasswordToken.setRememberMe(true);
       SecurityUtils.getSubject().login(usernamePasswordToken);
 

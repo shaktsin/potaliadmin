@@ -7,6 +7,7 @@ import com.potaliadmin.exceptions.PotaliRuntimeException;
 import com.potaliadmin.impl.framework.BaseDaoImpl;
 import com.potaliadmin.pact.dao.user.UserDao;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -20,7 +21,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     return (User) findUniqueByNamedQueryAndNamedParam("findByEmail", new String[]{"email"}, new Object[]{email});
   }
 
-  @Transactional
+  @Override
+  public User findByLogin(String login) {
+    return (User) findUniqueByNamedQueryAndNamedParam("findByLogin", new String[]{"login"}, new Object[]{login});
+  }
+
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public User createUser(UserSignUpQueryRequest userSignUpQueryRequest) {
     if (!userSignUpQueryRequest.verify()) {
       throw new InValidInputException("User sign up parameters are invalid");
@@ -32,15 +38,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
     try {
       user = new User();
-      user.setFirstName(userSignUpQueryRequest.getFirstName());
-      user.setLastName(userSignUpQueryRequest.getLastName());
-      user.setAccountName(userSignUpQueryRequest.getAccountName());
+      user.setName(userSignUpQueryRequest.getName());
+      user.setLogin(userSignUpQueryRequest.getLogin());
       user.setEmail(userSignUpQueryRequest.getEmail());
-      user.setGender(userSignUpQueryRequest.getGender());
-      user.setVerified(userSignUpQueryRequest.getVerified());
       user.setPasswordChecksum(userSignUpQueryRequest.getHash());
-      user.setInstituteId(userSignUpQueryRequest.getInstituteId());
-      save(user);
+      user = (User) save(user);
     } catch (Exception e) {
       e.printStackTrace();
     }

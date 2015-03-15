@@ -30,7 +30,21 @@ public class UserServiceImpl implements UserService {
       userResponse = new UserResponse();
       userResponse.setId(user.getId());
       userResponse.setEmail(user.getEmail());
-      userResponse.setName(user.getAccountName());
+      userResponse.setName(user.getName());
+      userResponse.setPasswordChecksum(user.getPasswordChecksum());
+    }
+    return userResponse;
+  }
+
+  @Override
+  public UserResponse findByLogin(String login) {
+    UserResponse userResponse = null;
+    User user = getUserDao().findByLogin(login);
+    if (null != user) {
+      userResponse = new UserResponse();
+      userResponse.setId(user.getId());
+      userResponse.setEmail(user.getEmail());
+      userResponse.setName(user.getName());
       userResponse.setPasswordChecksum(user.getPasswordChecksum());
     }
     return userResponse;
@@ -42,7 +56,7 @@ public class UserServiceImpl implements UserService {
     if (userSignUpRequest == null) {
       throw new InValidInputException("User request Parameters cannot be null");
     }
-    if (userSignUpRequest.validate()) {
+    if (!userSignUpRequest.validate()) {
       throw new InValidInputException("Input Parameters are invalid!");
     }
 
@@ -59,7 +73,7 @@ public class UserServiceImpl implements UserService {
     userResponse = new UserResponse();
     userResponse.setId(user.getId());
     userResponse.setEmail(user.getEmail());
-    userResponse.setName(user.getAccountName());
+    userResponse.setName(user.getName());
 
     return userResponse;
   }
